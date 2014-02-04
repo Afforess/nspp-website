@@ -6,25 +6,25 @@ body {
 }
 
 @media (min-width: 1400px) {
-	.container {
+	.lg-container {
 		width: 1370px;
 	}
 }
 
 @media (min-width: 1600px) {
-	.container {
+	.lg-container {
 		width: 1560px;
 	}
 }
 
 @media (min-width: 1800px) {
-	.container {
+	.lg-container {
 		width: 1760px;
 	}
 }
 
 @media (min-width: 2400px) {
-	.container {
+	.lg-container {
 		width: 2360px;
 	}
 }
@@ -170,4 +170,24 @@ img.miniflag {
 	width: -webkit-fit-content;
 	margin-bottom: 6px;
 	-webkit-text-stroke: 1px;
+}
+
+.bs-footer {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	margin-top: 100px;
+	color: #777;
+	text-align: center;
+	border-top: 1px solid #e5e5e5;
+}
+
+.footer-links {
+	margin-top: 20px;
+	padding-left: 0;
+	color: #999;
+}
+
+.footer-links li {
+	display: inline;
+	padding: 0 2px;
 }
