@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NationStates++</title>
+    <link href="assets//css/bootstrap.css" rel="stylesheet">
+	<link rel="icon" type="image/ico" href="favicon.ico?v=1"/>
+    <link href="jumbotron.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-47457755-1', 'nationstatesplusplus.com');
+	  ga('send', 'pageview');
+
+	</script>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">NationStates++</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <span class='navbar-text' style="float:inherit; font-size: 18px;" id='welcome'></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1>NationStates++</h1>
+        <p>NationStates++  is a browser extension for NationStates.net. Available for all major desktop browsers, and coming soon to iOS and Android devices!</p>
+        <p><a href="http://forum.nationstates.net/viewtopic.php?f=15&t=269464#p17306782" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Regional Newspapers</h2>
+          <p>Use NationStates++ to create or view regional newspapers, and share your favorite articles and stories! Newspapers can be viewed by users who haven't installed NationStates++ too!</p>
+          <p><a class="btn btn-default" href="/newspapers" role="button">View Newspapers &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>World Assembly Rankings</h2>
+          <p>View your world assembly power and influence compared to your region-mates. Ensure your members are abiding by endorsement caps, or try and find sleeper nations lurking in your region.</p>
+          <p><a class="btn btn-default" href="/wa" role="button">View Rankings &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>National Happenings</h2>
+          <p>Search through previous national happenings. Check out the sordid past details of other nations, and see every action they have made in the game!</p>
+          <p><a class="btn btn-default" href="/happenings" role="button">View Happenings &raquo;</a></p>
+        </div>
+      </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="assets//js/bootstrap.min.js"></script>
+	<script src="nspp.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if (typeof String.prototype.toTitleCase != 'function') {
+				String.prototype.toTitleCase = function (){
+					return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+				};
+			}
+			RegExp.escape = function(text) {
+				return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+			}
+			String.prototype.replaceAll = function(search, replace) {
+				return this.replace(new RegExp(RegExp.escape(search),'g'), replace);
+			};
+
+			getNSPPAPI().getUserDetails(function(nation, authCode) {
+				$("#welcome").html("Welcome: <a class='navbar-link' href='http://www.nationstates.net/nation=" + nation + "' target='_blank'>" + nation.replaceAll("_", " ").toTitleCase() + "</a>");
+			});
+		});
+	</script>
+  </body>
+</html>

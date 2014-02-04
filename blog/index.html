@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NationStates++ Blog</title>
+    <link href="http://nationstatesplusplus.net/assets/css/bootstrap.css" rel="stylesheet">
+	<link rel="icon" type="image/ico" href="http://nationstatesplusplus.net/favicon.ico?v=1"/>
+
+    <link href="http://nationstatesplusplus.net/jumbotron.css?v=1" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+	
+	<style type="text/css">
+		
+	</style>
+  </head>
+
+  <body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">NationStates++</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="http://nationstatesplusplus.net/newspapers">Newspapers</a></li>
+            <li ><a href="http://nationstatesplusplus.net/wa">World Assembly</a></li>
+            <li><a href="http://nationstatesplusplus.net/happenings">Happenings</a></li>
+          </ul>
+		  <ul class="nav navbar-nav navbar-right">
+            <li class="active" ><a href="/">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+	<div class="container">
+		<div class="panel content" style=" margin-top:20px">
+			<div class="panel-heading panel-header">
+				<h3 class="panel-title article_title">NSWiki Development: 1-31-2014</h3>
+				<h3 class="panel-title newspaper" style="float: right; margin-top: -16px;">by Jenlom</h3>
+			</div>
+			<div class="panel-body" style="margin-bottom:20px;">
+				<p><b>Completed:</b></p>
+				<p>Efforts so far have focused on the installation and setting up of the MediaWiki software, getting a logical system set up to contain the
+				nation articles, region articles, and articles related to other subjects of interest. Afforess has been hard at work writing a bot which takes
+				data from the daily NS dumps, as well as shards, crunches the numbers and then writes the articles to NSWiki.<p>
+				As you will be aware, a first sweep of the regions has already been completed, and we have a number of ideas for further information we can add
+				particularly around embassies, comments on trends within the region (for example comparing the number of nations in the region before and after
+				updates to comment on the regional population growth (or shrinkage) and other such useful information.
+				
+				<p><center><img src="http://nswiki.org/logos/nswikilogo.png" style="width: 40%; max-width: 200px;"></center></p>
+				
+				<p><b>Next steps:</b></p>
+				
+				The next priority however is to work on nation pages, which will be more complicated but work under a broadly similar system as the region pages
+				. Clearly there is more to be said on the subject of nations than of regions, and it is important that given the massive number of nations that
+				there is enough variety in the articles to keep NSWiki interesting.<p>
+				
+				We are also looking into a new theme for NSWiki, as opposed to the current basic MediaWiki theme. Using a Bootstrap 3-compatible theme means
+				we can use nicer formatting on our pages that will work for any sized-browser, and also bring it into line with the theme used on NSWiki.<p>
+				Also, a priority of mine is to start writing the help pages that will ensure we have a constant style across NSWiki, and the inclusion of
+				<a href="http://nswiki.org/index.php?title=NSWiki:Linking">pages on linking between nation, region and article pages</a> will hopefully ensure
+				contributors are linking in an efficient and visually-pleasing way.<p>
+			
+				We are also setting up a features suggestion system, located on our: <a href="https://nswiki.uservoice.com/forums/239544-general">UserVoice page</a>.<p>
+			</div>
+		</div>
+		<div class="panel content" style=" margin-top:20px">
+			<div class="panel-heading panel-header">
+				<h3 class="panel-title article_title">Incident Report: 1-23-2014</h3>
+				<h3 class="panel-title newspaper" style="float: right; margin-top: -16px;">by Afforess</h3>
+			</div>
+			<div class="panel-body" style="margin-bottom:20px;">
+				<p><b>What Happened:</b></p>
+				<p>Earlier today we were graced with <span style="color: #663399;">[violet]</span>'s recent new addition to NationStates, Dispatches!
+				As part of the usual round of bug fixing process I was poking around how exactly dispatches work. I was testing some changes to 
+				the code that involves how dispatches are upvoted and downvoted. When you upvote or downvote a particular dispatch, your browser is
+				making a request to a url that may look like this: </p><pre>http://www.nationstates.net/page=ajax2/a=setendo/id=210646/v=-1/localid=i3cf8XpWmiWEB</pre>
+				I was writing some javascript to add upvote / downvote arrows on page's national happenings, where it shows a dispatch is published. In the process
+				some test code that I had written for a dispatch was accidentally released and downloaded by about 30 players before it was reverted. As a result,
+				each of these players that downloaded this code, all upvoted the dispatch I had written for testing. <p></p>
+				<p>After this incident occurred, I stopped what I was working on to ensure that the released patch was taken down and not downloaded by additional users.
+					The code was only available for a fewer than 10 seconds. </p>
+					
+				<p><b>Why This Happened:</b></p>
+				<p>Normally new development for NationStates++ updates occurs in a separate location than where the live, production codebase lives. Due to the rushed nature of the 2.2x series
+				of releases (as a result of changes to the NationStates site), I never set up a new development environment for 2.3.x releases.</p>
+				
+				<p><b>What Will Be Changed:</b></p>
+				<p>I will be taking steps to ensure that future NationStates++ development does not interfere with the live codebase. If I had followed my normal prodecures, this incident would not
+				have been possible. I am making the setup of development environments, isolated from the main codebase a priority.
+				</p>
+				
+			</div>
+		</div>
+	</div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://nationstatesplusplus.net/assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

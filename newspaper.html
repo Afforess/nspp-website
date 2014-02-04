@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NationStates++</title>
+    <link href="assets//css/bootstrap.css" rel="stylesheet">
+	<link rel="icon" type="image/ico" href="favicon.ico?v=1"/>
+    <link href="jumbotron.css?v=21" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-47457755-1', 'nationstatesplusplus.com');
+	  ga('send', 'pageview');
+
+	</script>
+  </head>
+  <body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">NationStates++</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/newspapers">Newspapers</a></li>
+            <li><a href="/wa">World Assembly</a></li>
+            <li><a href="/happenings">Happenings</a></li>
+          </ul>
+		   <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://blog.nationstatesplusplus.net">Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	
+	<div class="container">
+		<div id='news_header' style='text-align: center;'>
+			<h1 id='newspaper_name'></h1>
+			<i id='newspaper_byline'></i>
+			<hr>
+		</div>
+	</div>
+	
+	<div id='single-column'>
+		<div class='inner-content container'>
+			
+		</div>
+	</div>
+	
+	<div id='double-column' class="row" style="margin-left: 0; margin-right:0;">
+		<div class='left-content col-md-6'>
+			
+		</div>
+		<div class='right-content col-md-6'>
+			
+		</div>
+	</div>
+	
+	<div id='triple-column' class="row" style="margin-left: 0; margin-right:0;">
+		<div class='left-content col-md-4'>
+			
+		</div>
+		<div class='middle-content col-md-4'>
+			
+		</div>
+		<div class='right-content col-md-4'>
+			
+		</div>
+	</div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="assets//js/bootstrap.min.js"></script>
+	<script src="nspp.js"></script>
+	<script src="functions.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if (window.location.href.contains("embed=true")) {
+				$(".navbar").hide();
+				$("body").css("padding-top", "0").css("margin-right", "4px").css("margin-left", "4px");
+				$(".inner-content").removeClass("container");
+				$("#news_header").parent().hide();
+				window.parent.postMessage({height: $("body").height()}, "*");
+			}
+						
+			updateSize = function() {
+				$("#single-column").find("img").css("max-width", ($("#single-column .inner-content").width() - 30) + "px");
+				$("#double-column .left-content").find("img").css("max-width", ($("#double-column .left-content").width() - 30) + "px");
+				$("#double-column .right-content").find("img").css("max-width", ($("#double-column .right-content").width() - 30) + "px");
+				$("#triple-column .left-content").find("img").css("max-width", ($("#triple-column .left-content").width() - 30) + "px");
+				$("#triple-column .middle-content").find("img").css("max-width", ($("#triple-column .middle-content").width() - 30) + "px");
+				$("#triple-column .right-content").find("img").css("max-width", ($("#triple-column .right-content").width() - 30) + "px");
+				if (window.location.href.contains("embed=true")) {
+					window.parent.postMessage({height: $("body").height()}, "*");
+					setTimeout(function() { window.parent.postMessage({height: $("body").height()}, "*"); }, 1000);
+				}
+			};
+			window.onresize = updateSize;
+
+			var id = (window.location.href.contains("id=") ? $.QueryString["id"] : 0);
+			var articleId = (window.location.href.contains("article=") ? $.QueryString["article"] : -1);
+			$.get("http://nationstatesplusplus.net/api/newspaper/lookup/?id=" + id, function(json) {
+				window.document.title = json.newspaper;
+				$("#newspaper_name").html("<a href='/newspaper?id=" + id + "'>" + parseBBCodes(json.newspaper) + "</a>");
+				$("#newspaper_byline").html(parseBBCodes(json.byline));
+
+				console.log("columns: " + json.columns);
+				var getSelector = function(index, numColumns) {
+					switch (parseInt(numColumns, 10)) {
+						case 1:
+							return $("#single-column .inner-content");
+						case 2:
+							return index % 2 == 0 ? $("#double-column .left-content") : $("#double-column .right-content");
+						case 3:
+							return index % 3 == 0 ? $("#triple-column .left-content") : (index % 3 == 1 ? $("#triple-column .middle-content") : $("#triple-column .right-content"));
+					}
+				}
+				
+				var articles = json.articles;
+				for (var i = 0; i < articles.length; i++) {
+					var article = articles[i];
+					getSelector(i, json.columns).prepend("<div newspaper='" + article.newspaper + "' id='article_id_" + article.article_id + "' class='content'></div>");
+				}
+				for (var i = 0; i < articles.length; i++) {
+					var article = articles[i];
+					var selector = $("#article_id_" + article.article_id);
+					console.log(id);
+					var html = "<h2 class='panel-header article_header'><a href='/newspaper?id=" + id + "&article=" + article.article_id + "' article='" + article.article_id + "' name='toggle_article'>"
+					html += parseBBCodes(article.title) + "</a></h2><div name='article_body' style='padding: 8px; " + (articleId != -1 ? "display:none;" : "") + "'>";
+					html += "<div class='author'>" + parseBBCodes(article.author) + ", " + (new Date(parseInt(article.timestamp, 10))).customFormat("#D##th# #MMMM# #YYYY#") + "</div>";
+					html += parseBBCodes(article.article) + "</div>";
+					selector.html(html);
+					selector.find("img").load(function() {window.onresize();});
+				}
+				
+				$("a[name='toggle_article']").on("click", function(event) {
+					event.preventDefault();
+					$("#article_id_" + $(this).attr("article")).find("div[name='article_body']").slideToggle(1000);
+					if (window.location.href.contains("embed=true")) {
+						window.parent.postMessage({height: $("body").height()}, "*");
+						for (var i = 0; i < 110; i += 1) {
+							setTimeout(function() { window.parent.postMessage({height: $("body").height()}, "*"); }, 10 * i);
+						}
+					}
+				});
+				setTimeout(function() {window.onresize();}, 1000);
+				window.onresize();
+				
+				if (window.location.href.contains("dark=true")) {
+					$(".content").removeClass("content").addClass("content-dark");
+					$(".author").removeClass("author").addClass("author-dark");
+					$(".article_header").removeClass("article_header").addClass("article_header-dark");
+					$(".panel-header").removeClass("panel-header").addClass("panel-header-dark");
+					$(".news_quote").removeClass("news_quote").addClass("news_quote-dark");
+					$("body").css("background-color", "rgba(255, 255, 255, 0.25)");
+				}
+				
+				if (articleId != -1) {
+					var article = $("#article_id_" + articleId);
+					if (article) {
+						article.find("div[name='article_body']").show();
+						$('html,body').animate({
+						  scrollTop: (article.offset().top - (window.location.href.contains("embed=true") ? 0 : 55))
+						}, 1000);
+						if (window.location.href.contains("embed=true")) {
+							window.parent.postMessage({height: $("body").height()}, "*");
+							setTimeout(function() { window.parent.postMessage({height: $("body").height()}, "*"); }, 1000);
+						}
+					}
+				} else {
+					//for (var i = 0; i < parseInt(json.columns, 10); i += 1) {
+					//	$(getSelector(i, json.columns).children()[0]).find("div[name='article_body']").show();
+					//}
+					if (window.location.href.contains("embed=true")) {
+						window.parent.postMessage({height: $("body").height()}, "*");
+						setTimeout(function() { window.parent.postMessage({height: $("body").height()}, "*"); }, 1000);
+					}
+				}
+			});
+			$("#submissions").show();
+		});
+	</script>
+  </body>
+</html>

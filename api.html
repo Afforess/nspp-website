@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<title>Jumbotron Template for Bootstrap</title>
+  </head>
+  <body>
+		<script type="text/javascript">
+			window.addEventListener('message', receiveMessage, false);
+			function receiveMessage(event) {
+				if (event.data == "identify_user") {
+					if ($("#nspp_user_auth").length > 0) {
+						event.source.postMessage({user: $("#nspp_user_auth").attr("user"), auth: $("#nspp_user_auth").attr("auth")}, "*");
+					}
+				}
+			}
+		</script>
+  </body>
+</html>

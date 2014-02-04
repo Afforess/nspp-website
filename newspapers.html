@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NationStates++</title>
+    <link href="assets//css/bootstrap.css" rel="stylesheet">
+	<link rel="icon" type="image/ico" href="favicon.ico?v=1"/>
+    <link href="jumbotron.css?v=4" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-47457755-1', 'nationstatesplusplus.com');
+	  ga('send', 'pageview');
+
+	</script>
+  </head>
+  
+  <style type="text/css">
+	.a_title {
+		font-size: 18px;
+		color: black;
+		font-weight: bold;
+	}
+  </style>
+
+  <body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">NationStates++</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/newspapers">Newspapers</a></li>
+            <li><a href="/wa">World Assembly</a></li>
+            <li><a href="/happenings">Happenings</a></li>
+          </ul>
+		   <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://blog.nationstatesplusplus.net">Blog</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+	
+	<div id='article_pattern' style='display:none;'>
+		<div class="panel content">
+			<div class="panel-heading panel-header">
+				<h3 class="panel-title article_title">Panel title</h3>
+				<h3 class="panel-title newspaper" style="float: right; margin-top: -16px;">News Source</h3>
+			</div>
+			<div class="panel-body article_content">
+				Panel content
+			</div>
+			<div class="panel-footer">
+				<h3 class="panel-title article_link"><a href="">Read the full article &raquo;</a></h3>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<h1 style="text-align:center">Latest News In NationStates</h1>
+		<div id="articles"></div>
+	</div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="assets//js/bootstrap.min.js"></script>
+	<script src="nspp.js"></script>
+	<script src="functions.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if (typeof String.prototype.toTitleCase != 'function') {
+				String.prototype.toTitleCase = function (){
+					return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+				};
+			}
+			RegExp.escape = function(text) {
+				return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+			}
+			String.prototype.replaceAll = function(search, replace) {
+				return this.replace(new RegExp(RegExp.escape(search),'g'), replace);
+			};
+			$.fn.scrolled = function (waitTime, fn) {
+				var tag = "scrollTimer";
+				this.scroll(function () {
+					var self = $(this);
+					var timer = self.data(tag);
+					if (timer) {
+						clearTimeout(timer);
+					}
+					timer = setTimeout(function () {
+						self.data(tag, null);
+						fn();
+					}, waitTime);
+					self.data(tag, timer);
+				});
+			};
+
+			var articlePattern = $("#article_pattern").clone();
+			$("#article_pattern").remove();
+			var loadArticles = function(start) {
+				$.get("http://nationstatesplusplus.com/api/newspaper/recent/?start=" + start, function(data) {
+					//var panels = ["panel panel-primary", "panel panel-grey"]
+					var html = "";
+					endOfArticles = data.length == 0;
+					var articleCount = 0;
+					for (var i = 0; i < data.length; i++) {
+						var article = data[i];
+						if (article.article.length > 5) {
+							articleCount += 1;
+							var body = articlePattern.clone();
+							$(body).find(".article_title").html("<span class='a_title'>" + $("<div></div>").html(parseBBCodes(article.title)).text().toUpperCase() + "</span>");
+							if (article.newspaper_id == 0) {
+								$(body).find(".newspaper").html("<a target='_blank' href='/newspaper?id=0'>NationStates Gameplay News</a>");
+							} else if (article.newspaper_id == 1) {
+								$(body).find(".newspaper").html("<a target='_blank' href='/newspaper?id=1'>NationStates Roleplay News</a>");
+							} else {
+								$(body).find(".newspaper").html("<a target='_blank' href='/newspaper?id=" + article.newspaper_id + "'>" + article.region.replaceAll("_", " ").toTitleCase() + " Regional News</a>");
+							}
+							$(body).find(".panel-body").html(parseBBCodes(article.article));
+							$(body).find(".article_link a").attr("href", "/newspaper?id=" +  + article.newspaper_id + "&article=" + article.article_id);
+							html += $(body).html();
+						}
+					}
+					$("#articles").html($("#articles").html() + html);
+				});
+			};
+			loadArticles(0);
+			var start = 10;
+			var endOfArticles = false;
+			$(window).scrolled(250, function() {
+				if ($(window).scrollTop() + 300 > $(document).height() - $(window).height() && !endOfArticles) {
+					loadArticles(start);
+					start += 10;
+				}
+			});
+		});
+	</script>
+  </body>
+</html>
