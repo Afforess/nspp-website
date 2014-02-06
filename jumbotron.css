@@ -191,3 +191,8 @@ img.miniflag {
 	display: inline;
 	padding: 0 2px;
 }
+
+.older-version {
+	margin-left: 3%;
+	font-size: 85%;
+}
