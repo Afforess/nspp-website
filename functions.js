@@ -314,7 +314,7 @@ function updateTextLinks(tag, text) {
 			break;
 		}
 		var innerText = text.substring(index + tag.length + 2, endIndex);
-		text = text.substring(0, index) + "<a target='_blank' href='http://www.nationstates.net/" + tag + "=" + innerText.toLowerCase().replaceAll(" ", "_") + "'>" + innerText + "</a>" + text.substring(endIndex + tag.length + 3);
+		text = text.substring(0, index) + "<a target='_blank' href='https://www.nationstates.net/" + tag + "=" + innerText.toLowerCase().replaceAll(" ", "_") + "'>" + innerText + "</a>" + text.substring(endIndex + tag.length + 3);
 		index = text.indexOf("[" + tag + "]", index);
 	}
 	return text;

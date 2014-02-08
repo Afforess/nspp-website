@@ -35,13 +35,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">NationStates++</a>
+          <a class="navbar-brand" href="https://nationstatesplusplus.net/">NationStates++</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li ><a href="/newspapers">Newspapers</a></li>
-            <li class="active"><a href="/wa">World Assembly</a></li>
-            <li><a href="/happenings">Happenings</a></li>
+            <li ><a href="https://nationstatesplusplus.net/newspapers">Newspapers</a></li>
+            <li class="active"><a href="https://nationstatesplusplus.net/wa">World Assembly</a></li>
+            <li><a href="https://nationstatesplusplus.net/happenings">Happenings</a></li>
           </ul>
 		  <ul class="nav navbar-nav navbar-right">
             <li><a href="http://blog.nationstatesplusplus.net">Blog</a></li>
@@ -63,11 +63,11 @@
 			<li>·</li>
 			<li><a href="https://github.com/Afforess/nspp-website">GitHub</a></li>
 			<li>·</li>
-			<li><a href="http://nationstatesplusplus.net/">About</a></li>
+			<li><a href="https://nationstatesplusplus.net/">About</a></li>
 			<li>·</li>
-			<li><a href="http://nationstatesplusplus.net/privacy">Privacy</a></li>
+			<li><a href="https://nationstatesplusplus.net/privacy">Privacy</a></li>
 			<li>·</li>
-			<li><a href="http://nationstatesplusplus.net/tos">Terms Of Service</a></li>
+			<li><a href="https://nationstatesplusplus.net/tos">Terms Of Service</a></li>
 			<li>·</li>
 			<li><a href="http://blog.nationstatesplusplus.net/">Blog</a></li>
 			<li>·</li>
@@ -79,7 +79,7 @@
 	<script src="functions.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$.get("http://nationstatesplusplus.net/api/wa/power_transfers/", function(data) {
+			$.get("https://nationstatesplusplus.net/api/wa/power_transfers/", function(data) {
 				var html = "";
 				var nations = "";
 				var regions = "";
@@ -92,19 +92,19 @@
 					if (nations.length > 0) nations += ",";
 					nations += transfer.delegate;
 					
-					html += "<div id='" + transfer.region + "'><a href='http://www.nationstates.net/region=" + transfer.region + "' target='_blank'>";
+					html += "<div id='" + transfer.region + "'><a href='https://www.nationstates.net/region=" + transfer.region + "' target='_blank'>";
 					html += "<img class='miniflag' region='" + transfer.region + "'><span>" + transfer.region_title + "</span></a>";
 					html += " was " + (transfer.type == "SEIZED_DELEGATE_STATUS" ? "seized" : "conquered") + " by ";
-					html += "<a href='http://www.nationstates.net/nation=" + transfer.delegate + "' target='_blank'><img nation='" + transfer.delegate;
+					html += "<a href='https://www.nationstates.net/nation=" + transfer.delegate + "' target='_blank'><img nation='" + transfer.delegate;
 					html += "' class='miniflag' ><span>" + transfer.delegate_title + "</span></a>.</div>";
 				}
 				$("#transfers").html(html);
-				$.get("/api/regionflag/?region=" + regions, function(data) {
+				$.get("https://nationstatesplusplus.net/api/regionflag/?region=" + regions, function(data) {
 					for (var region in data) {
 						$("img[region='" + region + "']").attr("src", data[region]);
 					}
 				});
-				$.get("/api/flag/?nation=" + nations, function(data) {
+				$.get("https://nationstatesplusplus.net/api/flag/?nation=" + nations, function(data) {
 					for (var nation in data) {
 						$("img[nation='" + nation + "']").attr("src", data[nation]);
 					}

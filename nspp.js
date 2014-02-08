@@ -6,7 +6,7 @@ function getNSPPAPI() {
 	if (typeof iframe === "undefined" || iframe === null) {
 		iframe = document.createElement("iframe");
 		iframe.id = "nspp_api_iframe";
-		iframe.src = "http://nationstatesplusplus.com/api.html";
+		iframe.src = "https://nationstatesplusplus.net/api.html";
 		iframe.style.display = "none";
 		document.body.appendChild(iframe);
 	}
@@ -46,7 +46,7 @@ function getNSPPAPI() {
 		iframe.parentNode.removeChild(iframe);
 		iframe = document.createElement("iframe");
 		iframe.id = "nspp_api_iframe";
-		iframe.src = "http://nationstatesplusplus.com/api.html";
+		iframe.src = "https://nationstatesplusplus.net/api.html";
 		iframe.style.display = "none";
 		document.body.appendChild(iframe);
 		getUserDetails();

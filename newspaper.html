@@ -31,13 +31,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">NationStates++</a>
+          <a class="navbar-brand" href="https://nationstatesplusplus.net/">NationStates++</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/newspapers">Newspapers</a></li>
-            <li><a href="/wa">World Assembly</a></li>
-            <li><a href="/happenings">Happenings</a></li>
+            <li class="active"><a href="https://nationstatesplusplus.net/newspapers">Newspapers</a></li>
+            <li><a href="https://nationstatesplusplus.net/wa">World Assembly</a></li>
+            <li><a href="https://nationstatesplusplus.net/happenings">Happenings</a></li>
           </ul>
 		   <ul class="nav navbar-nav navbar-right">
             <li><a href="http://blog.nationstatesplusplus.net">Blog</a></li>
@@ -87,11 +87,11 @@
 			<li>·</li>
 			<li><a href="https://github.com/Afforess/nspp-website">GitHub</a></li>
 			<li>·</li>
-			<li><a href="http://nationstatesplusplus.net/">About</a></li>
+			<li><a href="https://nationstatesplusplus.net/">About</a></li>
 			<li>·</li>
-			<li><a href="http://nationstatesplusplus.net/privacy">Privacy</a></li>
+			<li><a href="https://nationstatesplusplus.net/privacy">Privacy</a></li>
 			<li>·</li>
-			<li><a href="http://nationstatesplusplus.net/tos">Terms Of Service</a></li>
+			<li><a href="https://nationstatesplusplus.net/tos">Terms Of Service</a></li>
 			<li>·</li>
 			<li><a href="http://blog.nationstatesplusplus.net/">Blog</a></li>
 			<li>·</li>
@@ -127,7 +127,7 @@
 
 			var id = (window.location.href.contains("id=") ? $.QueryString["id"] : 0);
 			var articleId = (window.location.href.contains("article=") ? $.QueryString["article"] : -1);
-			$.get("http://nationstatesplusplus.net/api/newspaper/lookup/?id=" + id, function(json) {
+			$.get("https://nationstatesplusplus.net/api/newspaper/lookup/?id=" + id, function(json) {
 				window.document.title = json.newspaper;
 				$("#newspaper_name").html("<a href='/newspaper?id=" + id + "'>" + parseBBCodes(json.newspaper) + "</a>");
 				$("#newspaper_byline").html(parseBBCodes(json.byline));
