@@ -297,6 +297,8 @@ function parseBBCodes(text) {
 	text = updateTextLinks("region", text);
 	text = text.replaceAll("\n", "</br>");
 	
+	text = text.replaceAll("http://i.imgur.com", "https://i.imgur.com");
+	
 	//Strip align tags
 	var regex = new RegExp("\\[align=.{0,}\\]", "gi");
 	text.replace(regex, " ");
