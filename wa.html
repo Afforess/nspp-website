@@ -101,12 +101,12 @@
 				$("#transfers").html(html);
 				$.get("https://nationstatesplusplus.net/api/regionflag/?region=" + regions, function(data) {
 					for (var region in data) {
-						$("img[region='" + region + "']").attr("src", data[region]);
+						$("img[region='" + region + "']").attr("src", data[region].replaceAll("http://", "https://");
 					}
 				});
 				$.get("https://nationstatesplusplus.net/api/flag/?nation=" + nations, function(data) {
 					for (var nation in data) {
-						$("img[nation='" + nation + "']").attr("src", data[nation]);
+						$("img[nation='" + nation + "']").attr("src", data[nation].replaceAll("http://", "https://"));
 					}
 				});
 			});
