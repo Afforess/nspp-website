@@ -101,7 +101,7 @@
 				$("#transfers").html(html);
 				$.get("https://nationstatesplusplus.net/api/regionflag/?region=" + regions, function(data) {
 					for (var region in data) {
-						$("img[region='" + region + "']").attr("src", data[region].replaceAll("http://", "https://");
+						$("img[region='" + region + "']").attr("src", data[region].replaceAll("http://", "https://"));
 					}
 				});
 				$.get("https://nationstatesplusplus.net/api/flag/?nation=" + nations, function(data) {
