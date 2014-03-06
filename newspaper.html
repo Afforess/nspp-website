@@ -109,8 +109,9 @@
 				$(".inner-content").removeClass("container");
 				$("#news_header").parent().hide();
 				window.parent.postMessage({height: $("body").height()}, "*");
+				$("footer").hide();
 			}
-						
+		
 			updateSize = function() {
 				$("#single-column").find("img").css("max-width", ($("#single-column .inner-content").width() - 30) + "px");
 				$("#double-column .left-content").find("img").css("max-width", ($("#double-column .left-content").width() - 30) + "px");
@@ -127,12 +128,12 @@
 
 			var id = (window.location.href.contains("id=") ? $.QueryString["id"] : 0);
 			var articleId = (window.location.href.contains("article=") ? $.QueryString["article"] : -1);
-			$.get("https://nationstatesplusplus.net/api/newspaper/lookup/?id=" + id, function(json) {
+			var mod = (window.location.href.contains("mod=") ? $.QueryString["mod"] : -1);
+			$.get("https://nationstatesplusplus.net/api/newspaper/lookup/?id=" + id + "&mod=" + mod, function(json) {
 				window.document.title = json.newspaper;
 				$("#newspaper_name").html("<a href='/newspaper?id=" + id + "'>" + parseBBCodes(json.newspaper) + "</a>");
 				$("#newspaper_byline").html(parseBBCodes(json.byline));
 
-				console.log("columns: " + json.columns);
 				var getSelector = function(index, numColumns) {
 					switch (parseInt(numColumns, 10)) {
 						case 1:
@@ -152,7 +153,6 @@
 				for (var i = 0; i < articles.length; i++) {
 					var article = articles[i];
 					var selector = $("#article_id_" + article.article_id);
-					console.log(id);
 					var html = "<h2 class='panel-header article_header'><a href='/newspaper?id=" + id + "&article=" + article.article_id + "' article='" + article.article_id + "' name='toggle_article'>"
 					html += parseBBCodes(article.title) + "</a></h2><div name='article_body' style='padding: 8px; " + (articleId != -1 ? "display:none;" : "") + "'>";
 					html += "<div class='author'>" + parseBBCodes(article.author) + ", " + (new Date(parseInt(article.timestamp, 10))).customFormat("#D##th# #MMMM# #YYYY#") + "</div>";
