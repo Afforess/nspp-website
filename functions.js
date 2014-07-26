@@ -289,14 +289,12 @@ function parseBBCodes(text) {
 	text = text.replaceAll("[blockquote]", "<blockquote class='news_quote'>").replaceAll("[/blockquote]", "</blockquote>");
 	text = text.replaceAll("[list]", "<ul>").replaceAll("[/list]", "</ul>");
 	text = text.replaceAll("[*]", "</li><li>");
-	text = parseUrls(text, true);
-	text = parseUrls(text, false);
-	text = parseImages(text, true);
-	text = parseImages(text, false);
+	text = parseUrls(text);
+	text = parseImages(text);
 	text = updateTextLinks("nation", text);
 	text = updateTextLinks("region", text);
 	text = text.replaceAll("\n", "</br>");
-	
+	text = updateYoutubeLinks(text);
 	text = text.replaceAll("http://i.imgur.com", "https://i.imgur.com");
 	
 	//Strip align tags
@@ -308,24 +306,38 @@ function parseBBCodes(text) {
 	return text;
 }
 
-function updateTextLinks(tag, text) {
-	var index = text.indexOf("[" + tag + "]");
+function updateYoutubeLinks(text) {
+	var index = text.toLowerCase().indexOf("[youtube]");
 	while (index > -1) {
-		var endIndex = text.indexOf("[/" + tag + "]", index + tag.length + 2);
+		var endIndex = text.toLowerCase().indexOf("[/youtube]", index + 11);
+		if (endIndex == -1) {
+			break;
+		}
+		var innerText = text.substring(index + 9, endIndex);
+		text = text.substring(0, index) + innerText.replace(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, '<iframe width="640" height="360" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>')  + text.substring(endIndex + 11);
+		index = text.toLowerCase().indexOf("[youtube]", index);
+	}
+	return text;
+}
+
+function updateTextLinks(tag, text) {
+	var index = text.toLowerCase().indexOf("[" + tag + "]");
+	while (index > -1) {
+		var endIndex = text.toLowerCase().indexOf("[/" + tag + "]", index + tag.length + 2);
 		if (endIndex == -1) {
 			break;
 		}
 		var innerText = text.substring(index + tag.length + 2, endIndex);
 		text = text.substring(0, index) + "<a target='_blank' href='https://www.nationstates.net/" + tag + "=" + innerText.toLowerCase().replaceAll(" ", "_") + "'>" + innerText + "</a>" + text.substring(endIndex + tag.length + 3);
-		index = text.indexOf("[" + tag + "]", index);
+		index = text.toLowerCase().indexOf("[" + tag + "]", index);
 	}
 	return text;
 }
 
-function parseUrls(text, lowercase) {
-	var index = text.indexOf((lowercase ? "[url=" : "[URL="));
+function parseUrls(text) {
+	var index = text.toLowerCase().indexOf("[url=");
 	while (index > -1) {
-		var endIndex = text.indexOf((lowercase ? "[/url]" : "[/URL]"), index + 6);
+		var endIndex = text.toLowerCase().indexOf(("[/url]"), index + 6);
 		if (endIndex == -1) {
 			break;
 		}
@@ -333,22 +345,22 @@ function parseUrls(text, lowercase) {
 		var url = innerText.substring(0, innerText.indexOf("]"));
 		
 		text = text.substring(0, index) + "<a target='_blank' href='" + url + "'>" + innerText.substring(innerText.indexOf("]") + 1, innerText.length - 1) + "</a>" + text.substring(endIndex + 6);
-		index = text.indexOf((lowercase ? "[url=" : "[URL="), index);
+		index = text.toLowerCase().indexOf("[url=", index);
 	}
 	return text;
 }
 
-function parseImages(text, lowercase) {
-	var index = text.indexOf((lowercase ? "[img]" : "[IMG]"));
+function parseImages(text) {
+	var index = text.toLowerCase().indexOf("[img]");
 	while (index > -1) {
-		var endIndex = text.indexOf((lowercase ? "[/img]" : "[/IMG]"), index + 6);
+		var endIndex = text.toLowerCase().indexOf("[/img]", index + 6);
 		if (endIndex == -1) {
 			break;
 		}
 		var url = text.substring(index + 5, endIndex);
 		
 		text = text.substring(0, index) + "<img class='center-img' src='" + url + "'>" + text.substring(endIndex + 6);
-		index = text.indexOf((lowercase ? "[img]" : "[IMG]"), index);
+		index = text.toLowerCase().indexOf("[img]", index);
 	}
 	return text;
 }

@@ -158,6 +158,10 @@ img.miniflag {
 	margin-bottom: 6px;
 }
 
+.author a {
+	color: white;
+}
+
 .author-dark {
 	color: rgba(0, 0, 0, 0.83);
 	background: white;
@@ -170,6 +174,10 @@ img.miniflag {
 	width: -webkit-fit-content;
 	margin-bottom: 6px;
 	-webkit-text-stroke: 1px;
+}
+
+.author-dark a {
+	color: rgba(0, 0, 0, 0.83);
 }
 
 .bs-footer {

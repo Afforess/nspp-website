@@ -5,7 +5,7 @@
     <title>NationStates++</title>
     <link href="assets//css/bootstrap.css" rel="stylesheet">
 	<link rel="icon" type="image/ico" href="favicon.ico?v=1"/>
-    <link href="jumbotron.css?v=21" rel="stylesheet">
+    <link href="jumbotron.css?v=22" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -100,7 +100,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="assets//js/bootstrap.min.js"></script>
 	<script src="nspp.js"></script>
-	<script src="functions.js"></script>
+	<script src="functions.js?v=1"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			if (window.location.href.contains("embed=true")) {
@@ -155,10 +155,21 @@
 					var selector = $("#article_id_" + article.article_id);
 					var html = "<h2 class='panel-header article_header'><a href='/newspaper?id=" + id + "&article=" + article.article_id + "' article='" + article.article_id + "' name='toggle_article'>"
 					html += parseBBCodes(article.title) + "</a></h2><div name='article_body' style='padding: 8px; " + (articleId != -1 ? "display:none;" : "") + "'>";
-					html += "<div class='author'>" + parseBBCodes(article.author) + ", " + (new Date(parseInt(article.timestamp, 10))).customFormat("#D##th# #MMMM# #YYYY#") + "</div>";
+					html += "<div class='author'><span name='nation'>" + parseBBCodes(article.author) + ", " + (new Date(parseInt(article.timestamp, 10))).customFormat("#D##th# #MMMM# #YYYY#");
+					html += "</span><span style='display:none;' name='author-nation'><img src='" + article.submitter.flag + "' class='miniflag' title='" +  article.submitter.title + "'>";
+					html += "<a class='nlink' href='https://www.nationstates.net/nation=" + article.submitter.name + "'>" + article.submitter.title + "</a></span></div>";
 					html += parseBBCodes(article.article) + "</div>";
 					selector.html(html);
 					selector.find("img").load(function() {window.onresize();});
+					console.log(article.submitter);
+					$(selector.find(".author")).css("min-width", $(selector.find(".author")).width());
+					$(selector.find(".author")).hover(function() {
+						$(this).find("span[name='nation']").hide();
+						$(this).find("span[name='author-nation']").show();
+					}, function() {
+						$(this).find("span[name='nation']").show();
+						$(this).find("span[name='author-nation']").hide();
+					});
 				}
 				
 				$("a[name='toggle_article']").on("click", function(event) {
